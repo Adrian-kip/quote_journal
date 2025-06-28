@@ -1,19 +1,17 @@
 # server/config.py
 import os
+from dotenv import load_dotenv
 
-# We are temporarily disabling dotenv for this test.
+# This will load the .env file ONLY in your local development,
+# because the .env file does not exist on the Render server.
+# In production, the app will rely on the environment variables
+# provided by the Render service itself.
+load_dotenv()
 
 class Config:
     """
-    Configuration class for the Flask application.
+    Final, production-ready configuration.
     """
-    # --- TEMPORARY DEBUGGING STEP ---
-    # WARNING: This is for testing only. Do not leave this in production code.
-    # Paste your Render Internal Database URL directly here inside the quotes.
-    SQLALCHEMY_DATABASE_URI = "postgresql://quote_journal_db_user:Ido1eDqVUBfZxFo86QqHis2b22my9ZGA@dpg-d1g53tfgi27c73efvag0-a/quote_journal_db"
-    # ---
-
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    # We still need to get the JWT secret from the environment.
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
