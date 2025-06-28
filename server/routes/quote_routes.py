@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app import db
+from extensions import db
 from models.user import User
 from models.quote import Quote
 from models.like import Like
