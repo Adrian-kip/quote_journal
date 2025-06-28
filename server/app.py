@@ -23,15 +23,17 @@ def create_app():
 
     from models import user, quote, like
 
+    # === NEW CODE FOR TESTING --- Add these 4 lines ===
+    @app.route('/verify-deployment')
+    def verify_deployment():
+        return {"message": "Deployment is live!", "version": "final-test-v2"}
+    # =================================================
+
     app.register_blueprint(auth_bp, url_prefix='/api')
     app.register_blueprint(quote_bp, url_prefix='/api')
 
     return app
 
-# DO NOT create an app instance here for production
-# app = create_app()  <-- THIS LINE IS THE PROBLEM AND IS NOW REMOVED
-
 if __name__ == '__main__':
-    # This block only runs for local development, not in production with Gunicorn
     app = create_app()
     app.run(debug=True)
