@@ -2,10 +2,9 @@
 import os
 from dotenv import load_dotenv
 
-# This will load the .env file ONLY in your local development,
-# because the .env file does not exist on the Render server.
-# In production, the app will rely on the environment variables
-# provided by the Render service itself.
+# This will load the .env file ONLY in your local development.
+# On Render, this file won't exist, so the app will use
+# the environment variables set in the dashboard.
 load_dotenv()
 
 class Config:
