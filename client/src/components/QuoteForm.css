@@ -1,0 +1,88 @@
+/* src/components/QuoteForm.css */
+
+.form-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+.form-group {
+  margin-bottom: 1.5rem; /* Increased margin for better spacing */
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-background);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(8, 102, 255, 0.2); /* Use primary color with alpha for focus ring */
+}
+
+/* Specific style for the textarea */
+.form-input.textarea {
+  min-height: 120px;
+  resize: vertical;
+  font-family: inherit; /* Ensures textarea uses the same font as other inputs */
+  line-height: 1.5;
+}
+
+.form-error {
+  color: #fa383e;
+  font-size: 0.875rem;
+  margin-top: 0.5rem; /* Increased margin */
+}
+
+.form-server-error {
+  color: #fa383e;
+  background-color: rgba(250, 56, 62, 0.1);
+  padding: 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 0.85rem; /* Slightly larger button */
+  border: none;
+  border-radius: 4px;
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+  background-color: var(--button-hover-color);
+}
+
+.submit-button:disabled {
+  background-color: var(--secondary-color);
+  cursor: not-allowed;
+}
