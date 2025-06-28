@@ -1,5 +1,5 @@
-// server/app.py
-import os // <-- Make sure os is imported
+# server/app.py
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -22,16 +22,12 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    # --- UPDATED CORS CONFIGURATION ---
-    # Get the frontend URL from an environment variable
+    # Correct CORS Configuration for Production
     frontend_url = os.environ.get('FRONTEND_URL')
     if frontend_url:
-        # If the variable is set, use it for a specific CORS policy
         CORS(app, origins=[frontend_url], supports_credentials=True)
     else:
-        # Fallback for local development if the variable isn't set
         CORS(app)
-    # ------------------------------------
 
     from models import user, quote, like
 
