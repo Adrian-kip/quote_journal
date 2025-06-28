@@ -1,7 +1,6 @@
 # server/app.py
 import os
 from flask import Flask
-from flask_cors import CORS
 from config import Config
 
 # Import extensions from our new file
@@ -10,6 +9,7 @@ from extensions import db, migrate, jwt
 # Import routes
 from routes.auth_routes import auth_bp
 from routes.quote_routes import quote_bp
+from flask_cors import CORS # Make sure CORS is imported
 
 def create_app():
     app = Flask(__name__)
@@ -20,12 +20,8 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    # Configure CORS
-    frontend_url = os.environ.get('FRONTEND_URL')
-    if frontend_url:
-        CORS(app, origins=[frontend_url], supports_credentials=True)
-    else:
-        CORS(app)
+    # WARNING: For debugging only. This allows all origins.
+    CORS(app, origins="*")
 
     # This import is needed for Flask-Migrate to see the models
     from models import user, quote, like
