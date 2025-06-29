@@ -1,6 +1,5 @@
 from extensions import db
 
-
 class Quote(db.Model):
     __tablename__ = 'quotes'
 
@@ -18,6 +17,6 @@ class Quote(db.Model):
             'content': self.content,
             'tags': self.tags,
             'user_id': self.user_id,
-            'author': self.author.username,
+            'author': self.author.username if self.author else None,
             'likes': [like.to_dict() for like in self.likes]
         }
