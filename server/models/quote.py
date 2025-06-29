@@ -1,4 +1,5 @@
-from models import db 
+from extensions import db
+
 
 class Quote(db.Model):
     __tablename__ = 'quotes'
