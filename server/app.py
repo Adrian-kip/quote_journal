@@ -18,16 +18,8 @@ def create_app():
     frontend_url = os.environ.get('FRONTEND_URL')
     if frontend_url:
         CORS(app, origins=[frontend_url], supports_credentials=True)
-    else:
-        CORS(app)
-
+    
     from models import user, quote, like
-
-    # === NEW CODE FOR TESTING --- Add these 4 lines ===
-    @app.route('/verify-deployment')
-    def verify_deployment():
-        return {"message": "Deployment is live!", "version": "final-test-v2"}
-    # =================================================
 
     app.register_blueprint(auth_bp, url_prefix='/api')
     app.register_blueprint(quote_bp, url_prefix='/api')
@@ -35,5 +27,6 @@ def create_app():
     return app
 
 if __name__ == '__main__':
+    # This block is for local development and is ignored by Gunicorn
     app = create_app()
     app.run(debug=True)
