@@ -1,7 +1,6 @@
-# server/routes/auth_routes.py
 from flask import request, jsonify, Blueprint
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from extensions import db  # <-- Make sure this line is correct
+from extensions import db
 from models.user import User
 
 auth_bp = Blueprint('auth_bp', __name__)

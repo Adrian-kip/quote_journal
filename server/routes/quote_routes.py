@@ -1,11 +1,8 @@
-# server/routes/quote_routes.py
 from flask import request, jsonify, Blueprint
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from extensions import db  # <-- Make sure this line is correct
-from models.user import User
+from extensions import db
 from models.quote import Quote
 from models.like import Like
-from sqlalchemy import or_
 
 quote_bp = Blueprint('quote_bp', __name__)
 
