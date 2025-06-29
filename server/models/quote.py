@@ -11,12 +11,11 @@ class Quote(db.Model):
     likes = db.relationship('Like', backref='quote', lazy=True, cascade="all, delete-orphan")
 
     def to_dict(self):
-        """Converts quote object to a dictionary."""
         return {
             'id': self.id,
             'content': self.content,
             'tags': self.tags,
             'user_id': self.user_id,
-            'author': self.author.username if self.author else None,
+            'author': self.author.username,
             'likes': [like.to_dict() for like in self.likes]
         }

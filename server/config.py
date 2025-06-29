@@ -1,7 +1,10 @@
-# server/config.py
 import os
+from dotenv import load_dotenv
 
-# No more dotenv. We will rely 100% on Render's environment.
+# This will load the .env file ONLY in local development.
+# On Render, the app will use the environment variables set in the dashboard.
+load_dotenv()
+
 class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

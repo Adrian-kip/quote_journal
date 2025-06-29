@@ -13,15 +13,12 @@ class User(db.Model):
     likes = db.relationship('Like', backref='user', lazy=True, cascade="all, delete-orphan")
 
     def set_password(self, password):
-        """Hashes the password."""
         self.password_hash = sha256.hash(password)
 
     def check_password(self, password):
-        """Verifies the password."""
         return sha256.verify(password, self.password_hash)
 
     def to_dict(self):
-        """Converts user object to a dictionary."""
         return {
             'id': self.id,
             'username': self.username,
