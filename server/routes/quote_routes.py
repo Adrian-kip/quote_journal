@@ -39,7 +39,7 @@ def create_quote():
 def update_quote(quote_id):
     quote = Quote.query.get_or_404(quote_id)
     current_user_id = get_jwt_identity()
-    if quote.user_id != int(current_user_id):  # <-- Includes the int() fix
+    if quote.user_id != int(current_user_id):  
         return jsonify({"msg": "Unauthorized to edit this quote"}), 403
     data = request.get_json()
     quote.content = data.get('content', quote.content)
@@ -52,7 +52,7 @@ def update_quote(quote_id):
 def delete_quote(quote_id):
     quote = Quote.query.get_or_404(quote_id)
     current_user_id = get_jwt_identity()
-    if quote.user_id != int(current_user_id):  # <-- Includes the int() fix
+    if quote.user_id != int(current_user_id):  
         return jsonify({"msg": "Unauthorized to delete this quote"}), 403
     db.session.delete(quote)
     db.session.commit()

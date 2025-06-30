@@ -1,4 +1,3 @@
-// src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -24,9 +23,9 @@ const LoginPage = () => {
     setServerError('');
     try {
       const response = await api.post('/login', values);
-      // Use the loginUser function from our context
+      
       loginUser(response.data.access_token, response.data.user);
-      // After successful login, redirect to the homepage
+      
       navigate('/');
     } catch (error) {
       if (error.response && error.response.data.msg) {

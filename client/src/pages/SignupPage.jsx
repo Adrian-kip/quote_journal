@@ -1,4 +1,3 @@
-// src/pages/SignupPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -7,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const { api } = useAuth(); // We get the pre-configured axios instance
+  const { api } = useAuth(); 
   const [serverError, setServerError] = useState('');
 
   const initialValues = {
@@ -26,7 +25,7 @@ const SignupPage = () => {
     setServerError('');
     try {
       await api.post('/signup', values);
-      // After successful signup, redirect to the login page
+      
       navigate('/login');
     } catch (error) {
       if (error.response && error.response.data.msg) {

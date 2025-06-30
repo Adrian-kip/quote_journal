@@ -1,10 +1,9 @@
-// src/pages/CreateQuotePage.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../context/AuthContext';
-import '../components/QuoteForm.css'; // Use our new CSS file
+import '../components/QuoteForm.css'; 
 
 const CreateQuotePage = () => {
   const navigate = useNavigate();
@@ -17,13 +16,13 @@ const CreateQuotePage = () => {
 
   const validationSchema = Yup.object({
     content: Yup.string().required('Quote content cannot be empty.'),
-    tags: Yup.string(), // Tags are optional
+    tags: Yup.string(), 
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       await api.post('/quotes', values);
-      navigate('/'); // Navigate to homepage on success
+      navigate('/'); 
     } catch (error) {
       console.error('Failed to create quote', error);
       alert('There was an error creating your quote. Please try again.');

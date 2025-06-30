@@ -1,5 +1,3 @@
-// src/components/QuoteCard.jsx
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -10,7 +8,6 @@ const EMOJI_REACTIONS = ['❤️', '😂', '👍', '🔥'];
 const QuoteCard = ({ quote, onActionSuccess }) => {
   const { user, api } = useAuth();
 
-  // --- LOGIC FOR LIKING A QUOTE ---
   const handleLike = async (reaction) => {
     if (!user) {
       alert('You must be logged in to like a quote.');
@@ -21,22 +18,22 @@ const QuoteCard = ({ quote, onActionSuccess }) => {
         quote_id: quote.id,
         reaction: reaction,
       });
-      // Trigger a data refetch in the parent HomePage component
+      
       onActionSuccess();
     } catch (error) {
       console.error('Failed to like quote', error);
     }
   };
 
-  // --- LOGIC FOR DELETING A QUOTE (with enhanced debugging) ---
+  
   const handleDelete = async () => {
-    // --- FRONTEND DEBUGGING ---
-    // Log the values that the frontend is using for its checks.
+    
+    
     console.log("--- FRONTEND CHECK ---");
     console.log(`Frontend sees user.id: ${user.id} (Type: ${typeof user.id})`);
     console.log(`Frontend sees quote.user_id: ${quote.user_id} (Type: ${typeof quote.user_id})`);
     console.log(`Frontend is sending quote.id: ${quote.id} to the API.`);
-    // ---
+    
 
     if (window.confirm('Are you sure you want to delete this quote?')) {
       try {
@@ -49,16 +46,16 @@ const QuoteCard = ({ quote, onActionSuccess }) => {
     }
   };
   
-  // --- HELPER VARIABLES ---
-  // Using loose equality (==) to prevent potential data type issues (e.g., number vs string)
+  
+  
   const isAuthor = user && user.id == quote.user_id;
-  // Find the current user's existing like on this quote, if any
+  
   const userLike = user ? quote.likes.find(like => like.user_id === user.id) : null;
 
-  // --- JSX RENDERING ---
+  
   return (
     <div className="quote-card">
-      {/* Conditionally render the Edit/Delete controls only for the author */}
+      
       {isAuthor && (
         <div className="card-author-controls">
           <Link to={`/edit/${quote.id}`} className="control-btn edit-btn">Edit</Link>

@@ -1,6 +1,3 @@
-/* client/src/index.css */
-
-/* Define color variables for Light Mode (default) */
 :root {
   --background-color: #f0f2f5;
   --text-color: #1c1e21;
@@ -15,7 +12,7 @@
   --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Define color variables for Dark Mode */
+
 [data-theme='dark'] {
   --background-color: #18191a;
   --text-color: #e4e6eb;
@@ -30,7 +27,7 @@
   --shadow-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Basic Reset */
+
 * {
   box-sizing: border-box;
   margin: 0;

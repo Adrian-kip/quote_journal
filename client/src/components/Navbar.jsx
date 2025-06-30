@@ -1,11 +1,10 @@
-// src/components/Navbar.jsx
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
-  // 1. Get theme and toggleTheme from our context
+
   const { user, logoutUser, theme, toggleTheme } = useAuth();
   const navigate = useNavigate();
 
@@ -20,7 +19,6 @@ const Navbar = () => {
         Quote Journal
       </Link>
       <div className="navbar-links">
-        {/* 2. Add the theme toggle button */}
         <button onClick={toggleTheme} className="theme-toggle-btn">
           {theme === 'light' ? '🌙' : '☀️'}
         </button>

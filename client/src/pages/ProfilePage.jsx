@@ -5,9 +5,9 @@ import QuoteCard from '../components/QuoteCard';
 const ProfilePage = () => {
   const [allQuotes, setAllQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user, api } = useAuth(); // We need the user object to filter
+  const { user, api } = useAuth(); 
 
-  // This logic is identical to HomePage
+  
   const fetchQuotes = useCallback(async () => {
     try {
       const response = await api.get('/quotes');
@@ -24,7 +24,7 @@ const ProfilePage = () => {
     fetchQuotes();
   }, [fetchQuotes]);
 
-  // This is also identical to HomePage, ensuring likes/deletes update the UI
+  
   const handleActionSuccess = () => {
     fetchQuotes();
   };
@@ -33,9 +33,7 @@ const ProfilePage = () => {
     return <div>Loading your quotes...</div>;
   }
   
-  // --- THE KEY DIFFERENCE ---
-  // We filter the full list of quotes to get only the ones where the
-  // quote's user_id matches the logged-in user's id.
+  
   const userQuotes = allQuotes.filter(quote => quote.user_id == user.id);
 
   return (

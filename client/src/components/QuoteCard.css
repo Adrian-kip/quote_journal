@@ -1,4 +1,3 @@
-/* src/components/QuoteCard.css */
 .quote-card {
   background-color: var(--card-background);
   border: 1px solid var(--border-color);
@@ -68,7 +67,6 @@
     gap: 0.25rem;
 }
 
-/* Add to the end of src/components/QuoteCard.css */
 .card-author-controls {
   display: flex;
   justify-content: flex-end;

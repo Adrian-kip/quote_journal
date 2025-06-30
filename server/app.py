@@ -1,3 +1,4 @@
+# server/app.py
 import os
 from flask import Flask
 from config import Config
@@ -14,17 +15,21 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    frontend_url = os.environ.get('FRONTEND_URL')
-    if frontend_url:
-        CORS(app, origins=[frontend_url], supports_credentials=True)
-    else:
-        # Fallback for local development
-        CORS(app)
-    
-    # This import is needed for Flask-Migrate to see the models
+    CORS(app)
+
     from models import user, quote, like
+
+    @app.cli.command("reset-db")
+    def reset_db_command():
+        """Drops all database tables."""
+        db.drop_all()
+        print("Database tables dropped.")
 
     app.register_blueprint(auth_bp, url_prefix='/api')
     app.register_blueprint(quote_bp, url_prefix='/api')
 
     return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run(debug=True)

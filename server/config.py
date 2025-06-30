@@ -1,8 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-# This will load the .env file ONLY in local development.
-# On Render, the app will use the environment variables set in the dashboard.
+
 load_dotenv()
 
 class Config:
