@@ -25,6 +25,8 @@
   color: var(--text-color);
   font-weight: 500;
   transition: color 0.2s ease-in-out;
+  font-family: var(--font-primary); 
+  font-size: 1rem;
 }
 
 .nav-link:hover {
@@ -39,6 +41,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: color 0.2s ease-in-out;
+  font-family: var(--font-primary);
 }
 
 .logout-button:hover {
@@ -48,8 +51,15 @@
 .theme-toggle-btn {
   background: none;
   border: none;
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
   cursor: pointer;
   padding: 0;
-  margin-right: 1rem; 
+  margin-right: 1rem;
+}
+
+.create-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }

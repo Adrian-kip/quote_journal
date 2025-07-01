@@ -1,51 +1,74 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import QuoteCard from '../components/QuoteCard';
+import './HomePage.css';
 
 const HomePage = () => {
   const [quotes, setQuotes] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const { api } = useAuth();
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const fetchQuotes = useCallback(async () => {
-    
+  const fetchQuotes = useCallback(async (query) => {
     try {
-      const response = await api.get('/quotes');
+      const url = query ? `/quotes?q=${query}` : '/quotes';
+      const response = await api.get(url);
       setQuotes(response.data);
     } catch (error) {
       console.error("Failed to fetch quotes", error);
     } finally {
-      
-      setLoading(false);
+      setIsLoading(false); 
     }
   }, [api]);
 
+  
   useEffect(() => {
-    setLoading(true); 
-    fetchQuotes();
-  }, [fetchQuotes]);
-  
-  
+    setIsLoading(true);
+    fetchQuotes(); 
 
-  if (loading) {
-    return <div>Loading quotes...</div>;
-  }
+    const handleQuotesUpdate = () => fetchQuotes(searchTerm);
+    
+    
+    window.addEventListener('quotesUpdated', handleQuotesUpdate);
+
+    
+    return () => {
+      window.removeEventListener('quotesUpdated', handleQuotesUpdate);
+    };
+  }, []); 
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchQuotes(searchTerm);
+  };
   
-  if (quotes.length === 0) {
-      return <div>No quotes found. Be the first to add one!</div>
+  
+  const handleActionSuccess = () => {
+    fetchQuotes(searchTerm);
+  };
+
+  if (isLoading) {
+    return <div>Loading quotes...</div>;
   }
 
   return (
     <div>
-      {quotes.map(quote => (
-        <QuoteCard 
-          key={quote.id} 
-          quote={quote}
-          
-          
-          onActionSuccess={fetchQuotes}
-        />
-      ))}
+      <div className="search-container">
+        <form onSubmit={handleSearch}>
+          <input type="text" placeholder="Search for quotes..." className="search-input" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <button type="submit" className="search-button">Search</button>
+        </form>
+      </div>
+
+      <div className="quote-feed">
+        {quotes.length > 0 ? (
+          quotes.map(quote => (
+            <QuoteCard key={quote.id} quote={quote} onActionSuccess={handleActionSuccess} />
+          ))
+        ) : (
+          <p className="no-quotes-message">No quotes found. Try a different search or create one!</p>
+        )}
+      </div>
     </div>
   );
 };

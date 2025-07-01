@@ -11,7 +11,7 @@ class User(db.Model):
 
     quotes = db.relationship('Quote', backref='author', lazy=True, cascade="all, delete-orphan")
     likes = db.relationship('Like', backref='user', lazy=True, cascade="all, delete-orphan")
-
+    collections = db.relationship('Collection', backref='user', lazy=True, cascade="all, delete-orphan")
     def set_password(self, password):
         self.password_hash = sha256.hash(password)
 

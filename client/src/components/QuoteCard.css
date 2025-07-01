@@ -1,13 +1,27 @@
 .quote-card {
+  display: flex;
+  flex-direction: column;
+  break-inside: avoid-column;
   background-color: var(--card-background);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 2px 4px var(--shadow-color);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.quote-card:hover {
+  transform: translateY(-5px); 
+  box-shadow: 0 8px 20px var(--shadow-color); 
+}
+
+.quote-card-content {
+  flex-grow: 1;
 }
 
 .quote-content {
+  font-family: var(--font-quote);
   font-size: 1.25rem;
   font-style: italic;
   line-height: 1.6;
@@ -19,6 +33,20 @@
   justify-content: space-between;
   align-items: center;
   color: var(--secondary-text-color);
+  margin-top: 1rem;
+}
+
+.author-details {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.author-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%; 
+  object-fit: cover;
 }
 
 .quote-author {
@@ -30,41 +58,43 @@
 }
 
 .quote-actions {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border-color);
 }
 
 .like-section {
-    display: flex;
-    gap: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .reaction-btn {
-    background-color: var(--secondary-color);
-    border: 1px solid var(--border-color);
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: transform 0.2s;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 .reaction-btn.user-liked {
-    background-color: var(--primary-color);
-    color: var(--primary-text-color);
-    border-color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+  border-color: var(--primary-color);
 }
 
 .reaction-btn:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .like-count {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .card-author-controls {
@@ -87,6 +117,7 @@
 .edit-btn {
   color: var(--secondary-text-color);
 }
+
 .edit-btn:hover {
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
@@ -96,7 +127,58 @@
   color: #fa383e;
   border-color: #fa383e;
 }
+
 .delete-btn:hover {
   background-color: #fa383e;
   color: white;
+}
+
+.save-section {
+  position: relative; 
+}
+
+.save-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--secondary-text-color);
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.save-btn:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.collections-popup {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  width: 200px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 10;
+  margin-bottom: 0.5rem;
+}
+
+.collection-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.collection-item:hover {
+  background-color: var(--secondary-color);
+}
+
+.collection-item-none {
+    padding: 0.75rem 1rem;
+    color: var(--secondary-text-color);
 }

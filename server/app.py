@@ -6,6 +6,7 @@ from extensions import db, migrate, jwt
 from routes.auth_routes import auth_bp
 from routes.quote_routes import quote_bp
 from flask_cors import CORS
+from routes.collection_routes import collection_bp
 
 def create_app():
     app = Flask(__name__)
@@ -27,6 +28,7 @@ def create_app():
 
     app.register_blueprint(auth_bp, url_prefix='/api')
     app.register_blueprint(quote_bp, url_prefix='/api')
+    app.register_blueprint(collection_bp, url_prefix='/api')
 
     return app
 

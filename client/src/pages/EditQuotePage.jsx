@@ -3,24 +3,22 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../context/AuthContext';
-import '../components/QuoteForm.css'; 
+import '../components/QuoteForm.css';
 
 const EditQuotePage = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { api, user } = useAuth();
   
-
+  const { api, user, token } = useAuth();
+  
   const [initialValues, setInitialValues] = useState({ content: '', tags: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
 
   useEffect(() => {
     const fetchQuote = async () => {
       try {
         const response = await api.get(`/quotes/${id}`);
-        
         if (response.data.user_id !== user.id) {
             setError("You are not authorized to edit this quote.");
             setLoading(false);
@@ -28,7 +26,7 @@ const EditQuotePage = () => {
         }
         setInitialValues({
           content: response.data.content,
-          tags: response.data.tags || '', 
+          tags: response.data.tags || '',
         });
         setLoading(false);
       } catch (err) {
@@ -38,7 +36,7 @@ const EditQuotePage = () => {
       }
     };
 
-    if (user) { 
+    if (user) {
         fetchQuote();
     }
   }, [id, api, user]);
@@ -50,8 +48,11 @@ const EditQuotePage = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      await api.patch(`/quotes/${id}`, values);
-      navigate('/'); 
+     
+      await api.patch(`/quotes/${id}`, values, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      navigate('/');
     } catch (err) {
       console.error('Failed to update quote', err);
       alert('There was an error updating your quote.');

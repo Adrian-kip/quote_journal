@@ -8,20 +8,16 @@ const api = axios.create({
 });
 
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
-
-
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-
+  const [refreshSignal, setRefreshSignal] = useState(0);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
-
 
   useEffect(() => {
     const validateToken = async () => {
@@ -31,7 +27,6 @@ export const AuthProvider = ({ children }) => {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           setUser(response.data);
-          api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         } catch (error) {
           console.error("Token validation failed:", error);
           localStorage.removeItem('token');
@@ -44,26 +39,26 @@ export const AuthProvider = ({ children }) => {
     validateToken();
   }, [token]);
 
-
   const loginUser = useCallback((newToken, userData) => {
     localStorage.setItem('token', newToken);
-    api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
     setToken(newToken);
     setUser(userData);
   }, []);
 
   const logoutUser = useCallback(() => {
     localStorage.removeItem('token');
-    delete api.defaults.headers.common['Authorization'];
     setToken(null);
     setUser(null);
   }, []);
 
-  
   const toggleTheme = useCallback(() => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   }, []);
-
+  
+  const triggerRefresh = useCallback(() => {
+    console.log("--- REFRESH SIGNAL TRIGGERED ---"); 
+    setRefreshSignal(count => count + 1);
+  }, []);
 
   const contextValue = useMemo(() => ({
     user,
@@ -72,9 +67,10 @@ export const AuthProvider = ({ children }) => {
     loginUser,
     logoutUser,
     api,
-    theme,      
-    toggleTheme  
-  }), [user, token, loading, loginUser, logoutUser, theme, toggleTheme]);
+    theme,
+    toggleTheme,
+    triggerRefresh
+  }), [user, token, loading, loginUser, logoutUser, theme, toggleTheme, triggerRefresh]);
 
   return (
     <AuthContext.Provider value={contextValue}>
