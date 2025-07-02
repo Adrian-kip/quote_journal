@@ -20,16 +20,13 @@ const CreateQuotePage = ({ onSuccess }) => {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
-      
       if (onSuccess) {
-        onSuccess();
+        onSuccess(); 
       }
       
       
-      const event = new CustomEvent('quotesUpdated');
-      window.dispatchEvent(event);
+      window.location.reload();
 
-      resetForm();
     } catch (error) {
       console.error('Failed to create quote', error);
       alert('There was an error creating your quote. Please try again.');

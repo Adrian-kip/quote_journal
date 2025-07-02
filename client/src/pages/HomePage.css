@@ -1,44 +1,32 @@
-.search-container {
-  margin: 0 auto 2rem auto;
-  max-width: 600px;
+/* Styles for HomePage, including the quote feed */
+
+.quote-feed {
+  column-count: 3;
+  column-gap: 1.5rem;
 }
 
-.search-container form {
-  display: flex;
-  gap: 0.5rem;
+/* This is a fall-back for browsers that don't support masonry, and a good base */
+.quote-card {
+  margin-bottom: 1.5rem; 
+  break-inside: avoid-column;
 }
 
-.search-input {
-  flex-grow: 1;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 2rem; 
-  background-color: var(--card-background);
-  color: var(--text-color);
-  font-size: 1rem;
-  font-family: var(--font-primary);
-  transition: border-color 0.2s, box-shadow 0.2s;
+@media (max-width: 992px) {
+  .quote-feed {
+    column-count: 2;
+  }
 }
 
-.search-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(8, 102, 255, 0.2);
+@media (max-width: 768px) {
+  .quote-feed {
+    column-count: 1;
+  }
 }
 
-.search-button {
-  border: none;
-  background-color: var(--primary-color);
-  color: var(--primary-text-color);
-  padding: 0 1.5rem;
-  border-radius: 2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.search-button:hover {
-  background-color: var(--button-hover-color);
+.collection-detail-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
 }
 
 .no-quotes-message {
@@ -47,8 +35,9 @@
   padding: 2rem;
 }
 
-.collection-detail-header {
+.loading-more {
   text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2.5rem;
+  padding: 2rem;
+  font-weight: bold;
+  color: var(--secondary-text-color);
 }

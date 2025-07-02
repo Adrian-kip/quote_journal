@@ -6,67 +6,86 @@ import './HomePage.css';
 const HomePage = () => {
   const [quotes, setQuotes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { api } = useAuth();
-  const [searchTerm, setSearchTerm] = useState('');
+  const { api, user, token } = useAuth();
 
-  const fetchQuotes = useCallback(async (query) => {
-    try {
-      const url = query ? `/quotes?q=${query}` : '/quotes';
-      const response = await api.get(url);
-      setQuotes(response.data);
-    } catch (error) {
-      console.error("Failed to fetch quotes", error);
-    } finally {
-      setIsLoading(false); 
+  const fetchQuotes = useCallback(async () => {
+    
+    if (isLoading) {
+        try {
+          
+          const endpoint = user ? `/quotes/feed` : `/quotes/trending`;
+          const headers = user ? { 'Authorization': `Bearer ${token}` } : {};
+          
+          const response = await api.get(endpoint, { headers });
+          
+          setQuotes(response.data.quotes || []);
+        } catch (error) {
+          console.error("Failed to fetch quotes", error);
+          setQuotes([]);
+        } finally {
+          setIsLoading(false);
+        }
     }
-  }, [api]);
+  }, [api, user, token, isLoading]); 
 
   
   useEffect(() => {
-    setIsLoading(true);
-    fetchQuotes(); 
+    setIsLoading(true); 
+  }, [user])
 
-    const handleQuotesUpdate = () => fetchQuotes(searchTerm);
-    
-    
-    window.addEventListener('quotesUpdated', handleQuotesUpdate);
+ 
+  useEffect(() => {
+    if (isLoading) {
+        fetchQuotes();
+    }
+  }, [isLoading, fetchQuotes]);
 
-    
-    return () => {
-      window.removeEventListener('quotesUpdated', handleQuotesUpdate);
-    };
-  }, []); 
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    fetchQuotes(searchTerm);
-  };
   
+  useEffect(() => {
+    const handleUpdate = () => setIsLoading(true); 
+    window.addEventListener('quotesUpdated', handleUpdate);
+    return () => {
+      window.removeEventListener('quotesUpdated', handleUpdate);
+    };
+  }, []);
+
   
   const handleActionSuccess = () => {
-    fetchQuotes(searchTerm);
+   
+    const refetchSilently = async () => {
+        try {
+            const endpoint = user ? `/quotes/feed` : `/quotes/trending`;
+            const headers = user ? { 'Authorization': `Bearer ${token}` } : {};
+            const response = await api.get(endpoint, { headers });
+            setQuotes(response.data.quotes || []);
+        } catch (error) {
+            console.error("Failed to refetch quotes", error);
+        }
+    }
+    refetchSilently();
   };
 
+
   if (isLoading) {
-    return <div>Loading quotes...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <div className="search-container">
-        <form onSubmit={handleSearch}>
-          <input type="text" placeholder="Search for quotes..." className="search-input" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-          <button type="submit" className="search-button">Search</button>
-        </form>
-      </div>
-
+      {/* The search bar has been removed */}
       <div className="quote-feed">
         {quotes.length > 0 ? (
           quotes.map(quote => (
-            <QuoteCard key={quote.id} quote={quote} onActionSuccess={handleActionSuccess} />
+            <QuoteCard
+              key={quote.id}
+              quote={quote}
+              onActionSuccess={handleActionSuccess}
+            />
           ))
         ) : (
-          <p className="no-quotes-message">No quotes found. Try a different search or create one!</p>
+          <p className="no-quotes-message">
+            {user ? "Your feed is empty. Follow some users to see their quotes here!" : "No quotes found."}
+          </p>
         )}
       </div>
     </div>

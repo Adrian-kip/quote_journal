@@ -12,10 +12,12 @@ import CreateQuotePage from './pages/CreateQuotePage';
 import EditQuotePage from './pages/EditQuotePage';
 import ProfilePage from './pages/ProfilePage';
 import CollectionDetailPage from './pages/CollectionDetailPage';
+import TagDetailPage from './pages/TagDetailPage';
+import PublicProfilePage from './pages/PublicProfilePage'; 
+
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
 
   const handleCreateSuccess = () => {
     setIsModalOpen(false);
@@ -31,12 +33,14 @@ function App() {
 
       <main style={{ padding: '2rem' }}>
         <Routes>
-          {/* Public Routes */}
+          {/* --- Public Routes --- */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/users/:id" element={<PublicProfilePage />} />
+          <Route path="/tags/:tagName" element={<TagDetailPage />} />
 
-          {/* Protected Routes */}
+          {/* --- Protected Routes --- */}
           <Route
             path="/new"
             element={

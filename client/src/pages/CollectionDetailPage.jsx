@@ -1,45 +1,47 @@
-// client/src/pages/CollectionDetailPage.jsx
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams to read the URL
+import { useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import QuoteCard from '../components/QuoteCard';
-import './HomePage.css'; // We can reuse the same styles as the homepage feed
+import './HomePage.css';
 
 const CollectionDetailPage = () => {
-  const { id } = useParams(); // This gets the collection ID from the URL
+  const { id } = useParams();
   const [collection, setCollection] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const { api } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const { api, token } = useAuth();
 
   const fetchCollection = useCallback(async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
-      // Fetch the specific collection by its ID
-      const response = await api.get(`/collections/${id}`);
+      
+      const response = await api.get(`/collections/${id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       setCollection(response.data);
     } catch (error) {
       console.error("Failed to fetch collection", error);
-      setCollection(null); // Set to null on error
+      setCollection(null);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }, [api, id]);
+  }, [api, id, token]); 
 
   useEffect(() => {
-    fetchCollection();
-  }, [fetchCollection]);
+    if(token) { 
+        fetchCollection();
+    }
+  }, [fetchCollection, token]);
 
-  // When a quote is liked/deleted inside the collection, refetch the data
   const handleActionSuccess = () => {
     fetchCollection();
   };
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading collection...</div>;
   }
 
   if (!collection) {
-    return <div>Collection not found.</div>;
+    return <div>Collection not found or you do not have permission to view it.</div>;
   }
 
   return (

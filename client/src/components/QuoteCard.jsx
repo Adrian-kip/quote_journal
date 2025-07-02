@@ -6,7 +6,6 @@ import './QuoteCard.css';
 const EMOJI_REACTIONS = ['❤️', '😂', '👍', '🔥'];
 
 const QuoteCard = ({ quote, onActionSuccess }) => {
-  
   const { user, api, token } = useAuth();
   
   const [showCollections, setShowCollections] = useState(false);
@@ -16,20 +15,15 @@ const QuoteCard = ({ quote, onActionSuccess }) => {
   const avatarUrl = `https://ui-avatars.com/api/?name=${quote.author.split(' ').join('+')}&background=random&size=32&color=fff`;
 
   const handleSaveClick = async () => {
-    if (!user) return;
+    if (!user) return alert('You must be logged in to save quotes.');
     setShowCollections(!showCollections);
     if (!showCollections && collections.length === 0) {
       setIsLoadingCollections(true);
       try {
-        const response = await api.get('/collections', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const response = await api.get('/collections', { headers: { 'Authorization': `Bearer ${token}` } });
         setCollections(response.data);
-      } catch (error) {
-        console.error("Failed to fetch collections", error);
-      } finally {
-        setIsLoadingCollections(false);
-      }
+      } catch (error) { console.error("Failed to fetch collections", error); }
+      finally { setIsLoadingCollections(false); }
     }
   };
 
@@ -37,36 +31,39 @@ const QuoteCard = ({ quote, onActionSuccess }) => {
     try {
       await api.post('/collections/add-quote', 
         { quote_id: quote.id, collection_id: collectionId },
-        { headers: { 'Authorization': `Bearer ${token}` } } // Add header
+        { headers: { 'Authorization': `Bearer ${token}` } }
       );
       alert(`Quote saved to collection!`);
       setShowCollections(false);
-      onActionSuccess();
     } catch (error) {
       console.error("Failed to add quote to collection", error);
-      alert("Failed to save quote. Maybe it's already in that collection?");
+      // --- Improved Error Handling ---
+      if (error.response && error.response.status === 409) {
+        // If the error is a 409 Conflict, show the specific message from the server.
+        alert(error.response.data.msg);
+      } else {
+        // Otherwise, show the generic message.
+        alert("Failed to save quote.");
+      }
+      // -----------------------------
     }
   };
 
   const handleLike = async (reaction) => {
     if (!user) return;
     try {
-      await api.post('/likes', 
+      const response = await api.post('/likes', 
         { quote_id: quote.id, reaction: reaction },
-        { headers: { 'Authorization': `Bearer ${token}` } } // Add header
+        { headers: { 'Authorization': `Bearer ${token}` } }
       );
-      onActionSuccess();
-    } catch (error) {
-      console.error('Failed to like quote', error);
-    }
+      onActionSuccess(response.data);
+    } catch (error) { console.error('Failed to like quote', error); }
   };
   
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this quote?')) {
       try {
-        await api.delete(`/quotes/${quote.id}`, {
-          headers: { 'Authorization': `Bearer ${token}` } // Add header
-        });
+        await api.delete(`/quotes/${quote.id}`, { headers: { 'Authorization': `Bearer ${token}` } });
         onActionSuccess();
       } catch (error) {
         console.error("Failed to delete quote.", error);
@@ -78,7 +75,6 @@ const QuoteCard = ({ quote, onActionSuccess }) => {
   const isAuthor = user && user.id == quote.user_id;
   const userLike = user ? quote.likes.find(like => like.user_id === user.id) : null;
 
-  // ... The JSX return statement remains exactly the same ...
   return (
     <div className="quote-card">
       {isAuthor && (
@@ -92,9 +88,17 @@ const QuoteCard = ({ quote, onActionSuccess }) => {
         <div className="quote-footer">
           <div className="author-details">
             <img src={avatarUrl} alt={quote.author} className="author-avatar" />
-            <span className="quote-author">{quote.author}</span>
+            <Link to={`/users/${quote.user_id}`} className="quote-author-link">
+              <span className="quote-author">{quote.author}</span>
+            </Link>
           </div>
-          <span className="quote-tags">{quote.tags}</span>
+          <div className="quote-tags">
+            {(quote.tags || '').split(',').map(tag => tag.trim()).filter(tag => tag).map(tag => (
+              <Link to={`/tags/${tag.replace('#', '')}`} key={tag} className="tag-link">
+                {tag}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
       <div className="quote-actions">

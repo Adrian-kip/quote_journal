@@ -182,3 +182,23 @@
     padding: 0.75rem 1rem;
     color: var(--secondary-text-color);
 }
+
+.quote-tags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag-link {
+  background-color: var(--secondary-color);
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  color: var(--secondary-text-color);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.tag-link:hover {
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+}
